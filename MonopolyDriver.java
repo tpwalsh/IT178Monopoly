@@ -1,59 +1,92 @@
-import javax.swing.JButton;
+package IT178Monopoly;
+import javax.swing.JButton; 
 import javax.swing.JFrame;
 import java.awt.*;
+import java.awt.event.*;
 
-public class MonopolyDriver {
+public class MonopolyDriver implements ActionListener  {
 	JFrame f;
 	Property[] properties ;
-	private void run() {
-		properties = new Property[40];
+	int score1;
+	MyCanvas board;
+	/**
+	 * 
+	 */
+	private MonopolyDriver(){
+		f = new JFrame();
 		populateProperty();
-		 f = new JFrame();
-		
+		score1 =0;
+		properties = new Property[40];
+		drawBoard();
+	}
+	
+	private void run() {
+		/*
+		 * Main run program. In an event driven program like this,is it needed?
+		 */
+
+	}
+	/**
+	 * Draws the board initially. All other updates should be done from ActionListener.
+	 */
+	private void drawBoard(){
 		f.setSize(800, 600);
 		f.setLayout(null);
-		f.add(new MyCanvas());
-		f.setVisible(true);
-		
+		board =new MyCanvas();
+		f.add(board);
 		JButton b = new JButton("Roll");
-		b.setBounds(130, 100, 100, 40);
-
-	
+		b.setBounds(650, 100, 100, 40);
+		b.addActionListener(this);
+		f.add(b);
+		f.setVisible(true);
+		f.repaint();
 	}
 	
 	private void populateProperty(){
-		//properties[1].setname = "baltic Ave.";
-		
+		//TODO Figure out how to keep track of each property. 
+	}
+/**
+ * Button listener e is object that was accessed, cast it to whatever it needs to be (JButton)
+ */
+	public void actionPerformed(ActionEvent e) {
+		//TODO This needs fleshing out.
+		score1 ++;
+		f.repaint();
+		System.out.println(" "+score1);
+		board.repaint();		
 	}
 
 	public static void main(String[] args) {
 		MonopolyDriver play = new MonopolyDriver();
-
 		play.run();
-
 	}
 	
 	private class MyCanvas extends Canvas{
+		static final long serialVersionUID = 999;
 		  public MyCanvas () {
 		         setBackground (Color.GRAY);
-		         setSize(800, 600);
+		         setSize(600, 600);
 		      }
 		public void paint(Graphics g) 
 		{
-			//g.drawString("Hello",40,40);
+			
 			setBackground(Color.WHITE);
 			for(int x=0;x<11;x++){
-				g.drawRect(100+(50*x), 100, 50, 40);
-				g.drawRect(100+(50*x), 450, 50, 40);
+				g.drawRect(10+(50*x), 100, 50, 40);
+				g.drawRect(10+(50*x), 460, 50, 40);
 			}
 			for(int x=0;x<9;x++){
-				g.drawRect(100, 100+(40*x), 50, 40);
-				g.drawRect(600, 100+(40*x), 50, 40);
+				g.drawRect(10, 100+(40*x), 50, 40);
+				g.drawRect(510, 100+(40*x), 50, 40);
 			}
+			//TODO This font statement is REALLY laggy
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			//TODO Change these to access the player objects.
+			g.drawString("Player1 $"+score1, 20, 35);
+			g.drawString("Player2 $"+score1, 20, 50);
+			g.drawString("Player3 $"+score1, 20, 65);
+			g.drawString("Player4 $"+score1, 20, 80);
 			
-			
-
 		}
-
 	}
 }
