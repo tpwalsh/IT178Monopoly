@@ -1,4 +1,4 @@
-package IT178Monopoly;
+
 import javax.swing.JButton; 
 import javax.swing.JFrame;
 import java.awt.*;

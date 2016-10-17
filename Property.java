@@ -1,19 +1,25 @@
 
 public class Property {
-	String name;
-	String owner;
-	integer price;
-	
-	public landedOn(Player p,int MoveTo,int cashChanged){
-		if(owner = null){
-			buyFunction();
+	private String name;
+	private Player owner;
+	private int price;
+	private int rent;
+	public Property(){
+		owner = null;
+		price = 0;
+		name = "";
+	}
+	public void landedOn(Player p,int MoveTo){
+		if(owner ==  null){
+			p.buyFunction();
+			this.owner = p;
 		}else{
-			payOwner();
-		}
+			this.owner.payOwner(p, rent);
+		} 
 		//TODO Stuff
 	}
-	public ownedBy{
-		return 
+	public String ownedBy(){
+		return "test";
 	}
-
+ 
 }
