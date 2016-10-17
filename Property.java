@@ -21,5 +21,8 @@ public class Property {
 	public String ownedBy(){
 		return "test";
 	}
+	public void setName(String name){
+		this.name = name;
+	}
  
 }

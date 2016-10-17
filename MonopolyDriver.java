@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.*;
 
+//TODO  Create initial screen to load player names. destorying and recreating the jframe doesn't work. 
+
 public class MonopolyDriver implements ActionListener  {
 	JFrame f;
 	Property[] properties ;
@@ -14,9 +16,10 @@ public class MonopolyDriver implements ActionListener  {
 	 */
 	private MonopolyDriver(){
 		f = new JFrame();
-		populateProperty();
+		
 		score1 =0;
 		properties = new Property[40];
+		populateProperty();
 		drawBoard();
 	}
 	
@@ -44,15 +47,22 @@ public class MonopolyDriver implements ActionListener  {
 	
 	private void populateProperty(){
 		//TODO Figure out how to keep track of each property. 
+		System.out.println(properties.length);
+		for(int x=0; x<properties.length;x++){
+			properties[x] = new Property();
+			properties[x].setName("Property");  
+		}
 	}
 /**
  * Button listener e is object that was accessed, cast it to whatever it needs to be (JButton)
  */
 	public void actionPerformed(ActionEvent e) {
 		//TODO This needs fleshing out.
-		score1 ++;
+		int roll = ((int)(Math.random()*6) + 1) + ((int)(Math.random()*6) + 1);
+		System.out.println(roll);
+		
 		f.repaint();
-		System.out.println(" "+score1);
+	
 		board.repaint();		
 	}
 
