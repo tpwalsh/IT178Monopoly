@@ -9,7 +9,7 @@ public class Property {
 		price = 0;
 		name = "";
 	}
-	public void landedOn(Player p,int MoveTo){
+	public void landedOn(Player p){
 		if(owner ==  null){
 			p.buyFunction();
 			this.owner = p;
