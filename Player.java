@@ -1,4 +1,4 @@
-package IT178Monopoly;
+
 public class Player {
 	private String name;
 	private int location;
@@ -11,9 +11,11 @@ public class Player {
 	}
 	public Player(String name){}
 	public void payOwner(Player payer, int rent){
-		
+		this.cash +=rent;
+		payer.cash -= rent;
 	}
-	public void buyFunction(){
+	public void buyFunction(int rent){
+		this.cash -=rent;
 		
 	}
 	public String getName(){
@@ -24,5 +26,8 @@ public class Player {
 	}
 	public int getCash(){
 		return 0;
+	}
+	public void roll(){
+		
 	}
 }

@@ -1,4 +1,3 @@
-package IT178Monopoly;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -10,12 +9,11 @@ import java.util.ArrayList;;
 public class MonopolyDriver implements ActionListener {
 	JFrame f;
 	Property[] properties;
-	int score1;
+	int score1, playersTurn;
 	MyCanvas board;
 	JButton b;
-	// JTextArea p1, p2, p3, p4;
 	ArrayList<Player> players = new ArrayList<Player>();
-
+	
 	private static JLabel[] comments = new JLabel[5];
 	private static JTextArea[] playerNames = new JTextArea[4];
 	Font labelFont;
@@ -58,6 +56,7 @@ public class MonopolyDriver implements ActionListener {
 		f.validate();
 		f.setVisible(true);
 		f.repaint();
+		
 	}
 
 	private void getPlayers() {
@@ -101,6 +100,28 @@ public class MonopolyDriver implements ActionListener {
 	private void populateProperty() {
 		// TODO Figure out how to keep track of each property.
 		System.out.println(properties.length);
+		properties[0] = new Property("name", 100);
+		properties[1] = new Property("name", 100);
+		properties[2] = new Property("name", 100);
+		properties[3] = new Property("name", 100);
+		properties[4] = new Property("name", 100);
+		properties[5] = new Property("name", 100);
+		properties[6] = new Property("name", 100);
+		properties[7] = new Property("name", 100);
+		properties[8] = new Property("name", 100);
+		properties[9] = new Property("name", 100);
+		properties[10] = new Property("name", 100);
+		properties[11] = new Property("name", 100);
+		properties[12] = new Property("name", 100);
+		properties[13] = new Property("name", 100);
+		properties[14] = new Property("name", 100);
+		properties[15] = new Property("name", 100);
+		properties[16] = new Property("name", 100);
+		properties[17] = new Property("name", 100);
+		properties[18] = new Property("name", 100);
+		properties[19] = new Property("name", 100);
+		properties[20] = new Property("name", 100);
+		
 		for (int x = 0; x < properties.length; x++) {
 			properties[x] = new Property();
 			properties[x].setName("Property");
@@ -115,6 +136,7 @@ public class MonopolyDriver implements ActionListener {
 		// TODO This needs fleshing out.+
 
 		JButton objectPressed = (JButton) e.getSource();
+		//If in the intro screen
 		if (objectPressed.getText() == "Done") {
 			
 			f.remove(b);
@@ -133,8 +155,18 @@ public class MonopolyDriver implements ActionListener {
 			f.add(board);
 			drawBoard();
 		}
+		//if in the main screen
 		if(objectPressed.getText() == "Roll"){
 		int roll = ((int) (Math.random() * 6) + 1) + ((int) (Math.random() * 6) + 1);
+		//players.get(playersTurn).roll(roll);
+		players.get(playersTurn).moveSpaces(roll);
+		properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
+		
+		if(playersTurn ==3){
+			playersTurn =0;
+		}else{
+			playersTurn++;
+		}
 		System.out.println(roll);
 		}
 		f.repaint();
@@ -144,6 +176,7 @@ public class MonopolyDriver implements ActionListener {
 	public static void main(String[] args) {
 		MonopolyDriver play = new MonopolyDriver();
 		play.run();
+		
 	}
 
 	private class MyCanvas extends Canvas {
