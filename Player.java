@@ -32,7 +32,7 @@ public class Player {
 	public void moveSpaces(int roll) {
 		
 		if ( inJail == true ) { 
-				turn++; 
+			 
 		 }
 		else if(location + roll > 40) {
 			this.location = 40 - location - roll;
