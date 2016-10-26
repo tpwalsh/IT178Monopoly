@@ -13,7 +13,7 @@ public class MonopolyDriver implements ActionListener {
 	MyCanvas board;
 	JButton b;
 	ArrayList<Player> players = new ArrayList<Player>();
-	
+
 	private static JLabel[] comments = new JLabel[5];
 	private static JTextArea[] playerNames = new JTextArea[4];
 	Font labelFont;
@@ -56,7 +56,7 @@ public class MonopolyDriver implements ActionListener {
 		f.validate();
 		f.setVisible(true);
 		f.repaint();
-		
+
 	}
 
 	private void getPlayers() {
@@ -100,28 +100,50 @@ public class MonopolyDriver implements ActionListener {
 	private void populateProperty() {
 		// TODO Figure out how to keep track of each property.
 		System.out.println(properties.length);
-		properties[0] = new Property("name", 100);
-		properties[1] = new Property("name", 100);
-		properties[2] = new Property("name", 100);
-		properties[3] = new Property("name", 100);
-		properties[4] = new Property("name", 100);
-		properties[5] = new Property("name", 100);
-		properties[6] = new Property("name", 100);
-		properties[7] = new Property("name", 100);
-		properties[8] = new Property("name", 100);
-		properties[9] = new Property("name", 100);
-		properties[10] = new Property("name", 100);
-		properties[11] = new Property("name", 100);
-		properties[12] = new Property("name", 100);
-		properties[13] = new Property("name", 100);
-		properties[14] = new Property("name", 100);
-		properties[15] = new Property("name", 100);
-		properties[16] = new Property("name", 100);
-		properties[17] = new Property("name", 100);
-		properties[18] = new Property("name", 100);
-		properties[19] = new Property("name", 100);
-		properties[20] = new Property("name", 100);
+		properties[0] = new Property("Go", 60);
+		properties[1] = new Property("Mediteranitan Ave.", 60);
+		properties[2] = new Property("Community Chest", 0);
+		properties[3] = new Property("Baltic Ave.", 200);
+		properties[4] = new Property("Income Tax", 0);
+		properties[5] = new Property("Reading Railroad", 100);
+		properties[6] = new Property("Oriental Ave.", 100);
+		properties[7] = new Property("Chance", 0);
+		properties[8] = new Property("Vermont Ave.", 100);
+		properties[9] = new Property("Connecticut Ave.", 120);
+		properties[10] = new Property("Jail", 0);
+		properties[11] = new Property("St. Charles Place", 140);
+		properties[12] = new Property("Electric Company", 150);
+		properties[13] = new Property("States Ave.", 140);
+		properties[14] = new Property("Virginia Ave.", 160);
+		properties[15] = new Property("Pennsylvania Railroad", 200);
+		properties[16] = new Property("St. James Place", 180);
+		properties[17] = new Property("Community Chest", 0);
+		properties[18] = new Property("Tennessee Ave.", 180);
+		properties[19] = new Property("New York Ave.", 200);
+		properties[20] = new Property("Free Parking", 0);
+		properties[21] = new Property("Kentucky Ave.", 220);
+		properties[22] = new Property("Chance", 0);
+		properties[23] = new Property("Indiana Ave.", 220);
+		properties[24] = new Property("Illinois Ave.", 240);
+		properties[25] = new Property("B & O Railroad", 200);
+		properties[26] = new Property("Atlantic Ave.", 260);
+		properties[27] = new Property("Ventnor Ave.", 260);
+		properties[28] = new Property("Water Works", 150);
+		properties[29] = new Property("Marvin Gardens", 280);
+		properties[30] = new Property("Go To Jail", 0);
+		properties[31] = new Property("Pacific Ave.", 300);
+		properties[32] = new Property("North Carolina Ave.", 300);
+		properties[33] = new Property("Community Chest", 0);
+		properties[34] = new Property("Pennsylvania Ave.", 320);
+		properties[35] = new Property("Short Line", 200);
+		properties[36] = new Property("Chance", 0);
+		properties[37] = new Property("Park Place", 350);
+		properties[38] = new Property("Luxury Tax", 100);
+		properties[39] = new Property("Boardwalk", 400);
 		
+		
+		
+
 		for (int x = 0; x < properties.length; x++) {
 			properties[x] = new Property();
 			properties[x].setName("Property");
@@ -136,15 +158,15 @@ public class MonopolyDriver implements ActionListener {
 		// TODO This needs fleshing out.+
 
 		JButton objectPressed = (JButton) e.getSource();
-		//If in the intro screen
+		// If in the intro screen
 		if (objectPressed.getText() == "Done") {
-			
+
 			f.remove(b);
 			for (int x = 0; x < playerNames.length; x++) {
 				if (playerNames[x].getText() != null) {
 					System.out.println(playerNames[x].getText());
-					//TODO create players
-					//	players.add(new Player(playerNames[x].getText()));
+					// TODO create players
+					// players.add(new Player(playerNames[x].getText()));
 				}
 				f.remove(playerNames[x]);
 			}
@@ -155,19 +177,19 @@ public class MonopolyDriver implements ActionListener {
 			f.add(board);
 			drawBoard();
 		}
-		//if in the main screen
-		if(objectPressed.getText() == "Roll"){
-		int roll = ((int) (Math.random() * 6) + 1) + ((int) (Math.random() * 6) + 1);
-		//players.get(playersTurn).roll(roll);
-		players.get(playersTurn).moveSpaces(roll);
-		properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
-		
-		if(playersTurn ==3){
-			playersTurn =0;
-		}else{
-			playersTurn++;
-		}
-		System.out.println(roll);
+		// if in the main screen
+		if (objectPressed.getText() == "Roll") {
+			int roll = ((int) (Math.random() * 6) + 1) + ((int) (Math.random() * 6) + 1);
+			// players.get(playersTurn).roll(roll);
+			// players.get(playersTurn).moveSpaces(roll);
+//			properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
+
+			if (playersTurn == 3) {
+				playersTurn = 0;
+			} else {
+				playersTurn++;
+			}
+			System.out.println(roll);
 		}
 		f.repaint();
 
@@ -176,7 +198,7 @@ public class MonopolyDriver implements ActionListener {
 	public static void main(String[] args) {
 		MonopolyDriver play = new MonopolyDriver();
 		play.run();
-		
+
 	}
 
 	private class MyCanvas extends Canvas {
@@ -201,8 +223,8 @@ public class MonopolyDriver implements ActionListener {
 			// TODO This font statement is REALLY laggy
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 			// TODO Change these to access the player objects.
-			for(int x=0;x<players.size();x++){
-				g.drawString(players.get(x).getName() +" $" + players.get(x).getCash(), 20, 35+(x*15));
+			for (int x = 0; x < players.size(); x++) {
+				g.drawString(players.get(x).getName() + " $" + players.get(x).getCash(), 20, 35 + (x * 15));
 			}
 		}
 	}
