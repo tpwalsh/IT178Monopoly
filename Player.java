@@ -1,33 +1,66 @@
+package IT178Monopoly;
 
 public class Player {
 	private String name;
 	private int location;
-	private int cash;
+	private double cash;
+	private int turn;
+	private boolean inJail = false;
 	
-	public Player(){
-		cash = 300;
-		name = "";
-		location = 0;
+	
+	public Player(String name, double cashBalance, int locale, int playerTurn)
+	{
+		this.cash = cash;
+		this.location = location;
+		this.name = name;
+		this.turn = playerTurn;
+		
 	}
-	public Player(String name){}
 	public void payOwner(Player payer, int rent){
+		
 		this.cash +=rent;
 		payer.cash -= rent;
+	}
+	public void buyFunction(){
+		
 	}
 	public void buyFunction(int rent){
 		this.cash -=rent;
 		
 	}
-	public String getName(){
-		return "";
-	}
-	public int getLocation(){
+	
+	public void moveSpaces(int roll) {
+		
+		if ( inJail == true ) { 
+				turn++; 
+		 }
+		else if(location + roll > 40) {
+			this.location = 40 - location - roll;
+		}
+		else {
+			this.location = location + roll; 
+		}
+		
+			}
+		
+	public int getLocation() {
 		return location;
+	}
+	public String getName(){
+		return name;
 	}
 	public int getCash(){
 		return 0;
 	}
-	public void roll(){
-		
-	}
+	
+
+	
+	
+	
+			
+			//cash balance zero, bust
+	
+			
+	
+	
 }
