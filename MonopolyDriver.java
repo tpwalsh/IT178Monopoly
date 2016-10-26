@@ -140,14 +140,6 @@ public class MonopolyDriver implements ActionListener {
 		properties[37] = new Property("Park Place", 350);
 		properties[38] = new Property("Luxury Tax", 100);
 		properties[39] = new Property("Boardwalk", 400);
-		
-		
-		
-
-		for (int x = 0; x < properties.length; x++) {
-			properties[x] = new Property();
-			properties[x].setName("Property");
-		}
 	}
 
 	/**
@@ -212,16 +204,22 @@ public class MonopolyDriver implements ActionListener {
 		public void paint(Graphics g) {
 
 			setBackground(Color.WHITE);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 			for (int x = 0; x < 11; x++) {
 				g.drawRect(10 + (50 * x), 100, 50, 40);
 				g.drawRect(10 + (50 * x), 460, 50, 40);
+			g.drawString("test", 20+(x*50),135);
+			g.drawString("test", 20+(x*50),495);
 			}
-			for (int x = 0; x < 9; x++) {
-				g.drawRect(10, 100 + (40 * x), 50, 40);
-				g.drawRect(510, 100 + (40 * x), 50, 40);
+			for (int x = 0; x < 8; x++) {
+				
+				g.drawRect(0, 140 + (40 * x), 50, 40);
+				g.drawRect(510, 140 + (40 * x), 50, 40);
+				g.drawString("test"+x, 10, 180+(x*40));
+				g.drawString("test"+x, 510,180+(x*40));
 			}
 			// TODO This font statement is REALLY laggy
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			
 			// TODO Change these to access the player objects.
 			for (int x = 0; x < players.size(); x++) {
 				g.drawString(players.get(x).getName() + " $" + players.get(x).getCash(), 20, 35 + (x * 15));
