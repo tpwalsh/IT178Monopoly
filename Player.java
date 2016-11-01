@@ -1,4 +1,4 @@
-
+package IT178Monopoly;
 public class Player {
 	private String name;
 	private int location;
@@ -7,7 +7,7 @@ public class Player {
 	public Player(){
 		cash = 300;
 		name = "";
-		location = 0;
+		location = 2;
 	}
 	public Player(String name){}
 	public void payOwner(Player payer, int rent){
@@ -19,7 +19,7 @@ public class Player {
 		
 	}
 	public String getName(){
-		return "";
+		return name;
 	}
 	public int getLocation(){
 		return location;

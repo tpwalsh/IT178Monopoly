@@ -1,3 +1,4 @@
+package IT178Monopoly;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -24,7 +25,7 @@ public class MonopolyDriver implements ActionListener {
 	private MonopolyDriver() {
 
 		f = new JFrame();
-		f.setSize(800, 600);
+		f.setSize(1024, 768);
 		f.setLayout(null);
 		getPlayers();
 		score1 = 0;
@@ -49,8 +50,9 @@ public class MonopolyDriver implements ActionListener {
 
 		board = new MyCanvas();
 		f.add(board);
+
 		b = new JButton("Roll");
-		b.setBounds(650, 100, 100, 40);
+		b.setBounds(900, 100, 100, 40);
 		b.addActionListener(this);
 		f.add(b);
 		f.validate();
@@ -99,7 +101,7 @@ public class MonopolyDriver implements ActionListener {
 
 	private void populateProperty() {
 		// TODO Figure out how to keep track of each property.
-		System.out.println(properties.length);
+
 		properties[0] = new Property("Go", 60);
 		properties[1] = new Property("Mediteranitan Ave.", 60);
 		properties[2] = new Property("Community Chest", 0);
@@ -155,11 +157,10 @@ public class MonopolyDriver implements ActionListener {
 
 			f.remove(b);
 			for (int x = 0; x < playerNames.length; x++) {
-				if (playerNames[x].getText() != null) {
-					System.out.println(playerNames[x].getText());
-					// TODO create players
-					// players.add(new Player(playerNames[x].getText()));
+				if (!playerNames[x].getText().equals("") ) {
+					 players.add(new Player(playerNames[x].getText()));
 				}
+				System.out.println("location:"+players.get(0).getName());
 				f.remove(playerNames[x]);
 			}
 			for (int x = 0; x < comments.length; x++) {
@@ -174,14 +175,14 @@ public class MonopolyDriver implements ActionListener {
 			int roll = ((int) (Math.random() * 6) + 1) + ((int) (Math.random() * 6) + 1);
 			// players.get(playersTurn).roll(roll);
 			// players.get(playersTurn).moveSpaces(roll);
-//			properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
+			// properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
 
 			if (playersTurn == 3) {
 				playersTurn = 0;
 			} else {
 				playersTurn++;
 			}
-			System.out.println(roll);
+			System.out.println("Roll:"+roll);
 		}
 		f.repaint();
 
@@ -198,32 +199,78 @@ public class MonopolyDriver implements ActionListener {
 
 		public MyCanvas() {
 			setBackground(Color.GRAY);
-			setSize(600, 600);
+			setSize(900, 768);
+
 		}
 
 		public void paint(Graphics g) {
 
 			setBackground(Color.WHITE);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
 			for (int x = 0; x < 11; x++) {
-				g.drawRect(10 + (50 * x), 100, 50, 40);
-				g.drawRect(10 + (50 * x), 460, 50, 40);
-			g.drawString("test", 20+(x*50),135);
-			g.drawString("test", 20+(x*50),495);
+				g.drawRect(10 + (80 * x), 20, 80, 75);
+				g.drawRect(10 + (80 * x), 655, 80, 75);
+				if (properties[x + 20].getName().length() < 10) {
+					g.drawString(properties[x + 20].getName(), 11 + (x * 80), 45);
+				} else {
+					g.drawString(properties[x + 20].getName().substring(0, properties[x + 20].getName().lastIndexOf(" ")),
+							11 + (x * 80), 45);
+					g.drawString(properties[x + 20].getName().substring(properties[x + 20].getName().lastIndexOf(" ") + 1),
+							11 + (x * 80), 57);
+				}
+
+				if (properties[10 - x].getName().length() < 10) {
+					g.drawString(properties[10 - x].getName(), 11 + (x * 80), 667);
+				} else {
+					g.drawString(properties[10 - x].getName().substring(0, properties[10 - x].getName().lastIndexOf(" ")),
+							11 + (x * 80), 667);
+					g.drawString(properties[10 - x].getName().substring(properties[10 - x].getName().lastIndexOf(" ") + 1),
+							11 + (x * 80), 687);
+				}
+
+
+
 			}
 			for (int x = 0; x < 8; x++) {
+
+				g.drawRect(10, 95 + (70 * x), 80, 70);
+				g.drawRect(810, 95 + (70 * x), 80, 70);
+				if (properties[19 - x].getName().length() < 10)
+					g.drawString(properties[19 - x].getName(), 10, 120 + (x * 70));
+				else {
+					g.drawString(properties[19 - x].getName().substring(0,properties[19 - x].getName().lastIndexOf(' ')), 10, 120 + (x * 70));
+					g.drawString(properties[19 - x].getName().substring(properties[19 - x].getName().lastIndexOf(' ')+1), 10, 132 + (x * 70));
+				}
 				
-				g.drawRect(0, 140 + (40 * x), 50, 40);
-				g.drawRect(510, 140 + (40 * x), 50, 40);
-				g.drawString("test"+x, 10, 180+(x*40));
-				g.drawString("test"+x, 510,180+(x*40));
+				if (properties[19 - x].getName().length() < 10)
+					g.drawString(properties[19 - x].getName(), 810, 120 + (x * 70));
+				else {
+					g.drawString(properties[19 - x].getName().substring(0,properties[19 - x].getName().lastIndexOf(' ')), 810, 120 + (x * 70));
+					g.drawString(properties[19 - x].getName().substring(properties[19 - x].getName().lastIndexOf(' ')+1), 810, 132 + (x * 70));
+				}
+				
+
 			}
-			// TODO This font statement is REALLY laggy
-			
+
 			// TODO Change these to access the player objects.
+			
 			for (int x = 0; x < players.size(); x++) {
-				g.drawString(players.get(x).getName() + " $" + players.get(x).getCash(), 20, 35 + (x * 15));
+				System.out.println("location:"+players.get(x).getLocation());
+				g.drawString(players.get(x).getName() + " $" + players.get(x).getCash(), 200, 350 + (x * 15));
+				if(players.get(x).getLocation()<10)
+					g.drawString(""+x,810+ (players.get(x).getLocation()*80),720 );
+				else
+					if(players.get(x).getLocation()<20)
+						g.drawString(""+x,100+players.get(x).getLocation() ,100+ players.get(x).getLocation());
+					else
+						if(players.get(x).getLocation()<30)
+							g.drawString(""+x,100+players.get(x).getLocation() ,100+ players.get(x).getLocation());
+						else
+							g.drawString(""+x,100+players.get(x).getLocation() ,100+ players.get(x).getLocation());
 			}
+			
+			
+			
 		}
 	}
 }
