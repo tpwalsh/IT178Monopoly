@@ -7,15 +7,20 @@ public class Player {
 	public Player(){
 		cash = 300;
 		name = "";
-		location = 2;
+		location = 0;
 	}
-	public Player(String name){}
+	public Player(String name){
+		cash = 300;
+		this.name = name;
+		location = 0;
+	}
 	public void payOwner(Player payer, int rent){
 		this.cash +=rent;
 		payer.cash -= rent;
 	}
-	public void buyFunction(int rent){
-		this.cash -=rent;
+	public Player buyFunction(int rent){
+		if(this.cash> rent)this.cash -=rent;
+		return this;
 		
 	}
 	public String getName(){
@@ -24,8 +29,16 @@ public class Player {
 	public int getLocation(){
 		return location;
 	}
+	public void move(int spaces){
+		this.location +=1;
+		//this.location += spaces;
+		if (location > 39){
+			location-=40;
+			cash += 200;
+		}
+	}
 	public int getCash(){
-		return 0;
+		return cash;
 	}
 	public void roll(){
 		

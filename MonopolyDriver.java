@@ -8,13 +8,14 @@ import java.util.ArrayList;;
 //TODO  Create initial screen to load player names. destorying and recreating the jframe doesn't work. 
 
 public class MonopolyDriver implements ActionListener {
+	Graphics g;
 	JFrame f;
 	Property[] properties;
 	int score1, playersTurn;
 	MyCanvas board;
 	JButton b;
 	ArrayList<Player> players = new ArrayList<Player>();
-
+	String result;
 	private static JLabel[] comments = new JLabel[5];
 	private static JTextArea[] playerNames = new JTextArea[4];
 	Font labelFont;
@@ -25,13 +26,13 @@ public class MonopolyDriver implements ActionListener {
 	private MonopolyDriver() {
 
 		f = new JFrame();
-		f.setSize(1024, 768);
+		f.setSize(1024, 900);
 		f.setLayout(null);
 		getPlayers();
 		score1 = 0;
+		result = " ";
 		properties = new Property[40];
 		populateProperty();
-
 		// drawBoard();
 	}
 
@@ -102,46 +103,46 @@ public class MonopolyDriver implements ActionListener {
 	private void populateProperty() {
 		// TODO Figure out how to keep track of each property.
 
-		properties[0] = new Property("Go", 60);
-		properties[1] = new Property("Mediteranitan Ave.", 60);
-		properties[2] = new Property("Community Chest", 0);
-		properties[3] = new Property("Baltic Ave.", 200);
-		properties[4] = new Property("Income Tax", 0);
-		properties[5] = new Property("Reading Railroad", 100);
-		properties[6] = new Property("Oriental Ave.", 100);
-		properties[7] = new Property("Chance", 0);
-		properties[8] = new Property("Vermont Ave.", 100);
-		properties[9] = new Property("Connecticut Ave.", 120);
-		properties[10] = new Property("Jail", 0);
-		properties[11] = new Property("St. Charles Place", 140);
-		properties[12] = new Property("Electric Company", 150);
-		properties[13] = new Property("States Ave.", 140);
-		properties[14] = new Property("Virginia Ave.", 160);
-		properties[15] = new Property("Pennsylvania Railroad", 200);
-		properties[16] = new Property("St. James Place", 180);
-		properties[17] = new Property("Community Chest", 0);
-		properties[18] = new Property("Tennessee Ave.", 180);
-		properties[19] = new Property("New York Ave.", 200);
-		properties[20] = new Property("Free Parking", 0);
-		properties[21] = new Property("Kentucky Ave.", 220);
-		properties[22] = new Property("Chance", 0);
-		properties[23] = new Property("Indiana Ave.", 220);
-		properties[24] = new Property("Illinois Ave.", 240);
-		properties[25] = new Property("B & O Railroad", 200);
-		properties[26] = new Property("Atlantic Ave.", 260);
-		properties[27] = new Property("Ventnor Ave.", 260);
-		properties[28] = new Property("Water Works", 150);
-		properties[29] = new Property("Marvin Gardens", 280);
-		properties[30] = new Property("Go To Jail", 0);
-		properties[31] = new Property("Pacific Ave.", 300);
-		properties[32] = new Property("North Carolina Ave.", 300);
-		properties[33] = new Property("Community Chest", 0);
-		properties[34] = new Property("Pennsylvania Ave.", 320);
-		properties[35] = new Property("Short Line", 200);
-		properties[36] = new Property("Chance", 0);
-		properties[37] = new Property("Park Place", 350);
-		properties[38] = new Property("Luxury Tax", 100);
-		properties[39] = new Property("Boardwalk", 400);
+		properties[0] = new Property("Go", 60, 2);
+		properties[1] = new Property("Mediteranitan Ave.", 60, 4);
+		properties[2] = new Property("Community Chest", 0, 0);
+		properties[3] = new Property("Baltic Ave.", 200, 6);
+		properties[4] = new Property("Income Tax", 0, 0);
+		properties[5] = new Property("Reading Railroad", 100, 0);
+		properties[6] = new Property("Oriental Ave.", 100, 6);
+		properties[7] = new Property("Chance", 0, 0);
+		properties[8] = new Property("Vermont Ave.", 100, 6);
+		properties[9] = new Property("Connecticut Ave.", 120, 8);
+		properties[10] = new Property("Jail", 0, 0);
+		properties[11] = new Property("St. Charles Place", 140, 10);
+		properties[12] = new Property("Electric Company", 150, 0);
+		properties[13] = new Property("States Ave.", 140, 10);
+		properties[14] = new Property("Virginia Ave.", 160, 12);
+		properties[15] = new Property("Pennsylvania Railroad", 200, 0);
+		properties[16] = new Property("St. James Place", 180, 14);
+		properties[17] = new Property("Community Chest", 0, 0);
+		properties[18] = new Property("Tennessee Ave.", 180, 14);
+		properties[19] = new Property("New York Ave.", 200, 16);
+		properties[20] = new Property("Free Parking", 0, 0);
+		properties[21] = new Property("Kentucky Ave.", 220, 18);
+		properties[22] = new Property("Chance", 0, 0);
+		properties[23] = new Property("Indiana Ave.", 220, 18);
+		properties[24] = new Property("Illinois Ave.", 240, 20);
+		properties[25] = new Property("B & O Railroad", 200, 0);
+		properties[26] = new Property("Atlantic Ave.", 260, 22);
+		properties[27] = new Property("Ventnor Ave.", 260, 22);
+		properties[28] = new Property("Water Works", 150, 0);
+		properties[29] = new Property("Marvin Gardens", 280, 24);
+		properties[30] = new Property("Go To Jail", 0, 0);
+		properties[31] = new Property("Pacific Ave.", 300, 26);
+		properties[32] = new Property("North Carolina Ave.", 300, 26);
+		properties[33] = new Property("Community Chest", 0, 0);
+		properties[34] = new Property("Pennsylvania Ave.", 320, 28);
+		properties[35] = new Property("Short Line", 200, 0);
+		properties[36] = new Property("Chance", 0, 0);
+		properties[37] = new Property("Park Place", 350, 35);
+		properties[38] = new Property("Luxury Tax", 100, 0);
+		properties[39] = new Property("Boardwalk", 400, 50);
 	}
 
 	/**
@@ -157,35 +158,39 @@ public class MonopolyDriver implements ActionListener {
 
 			f.remove(b);
 			for (int x = 0; x < playerNames.length; x++) {
-				if (!playerNames[x].getText().equals("") ) {
-					 players.add(new Player(playerNames[x].getText()));
+				if (!playerNames[x].getText().equals("")) {
+					players.add(new Player(playerNames[x].getText()));
 				}
-				System.out.println("location:"+players.get(0).getName());
+				System.out.println("location:" + players.get(0).getName());
 				f.remove(playerNames[x]);
 			}
 			for (int x = 0; x < comments.length; x++) {
 				f.remove(comments[x]);
 			}
-			board = new MyCanvas();
-			f.add(board);
+		//	board = new MyCanvas();
+		//	f.add(board);
 			drawBoard();
 		}
 		// if in the main screen
 		if (objectPressed.getText() == "Roll") {
 			int roll = ((int) (Math.random() * 6) + 1) + ((int) (Math.random() * 6) + 1);
+			roll = 1;
 			// players.get(playersTurn).roll(roll);
-			// players.get(playersTurn).moveSpaces(roll);
-			// properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
+			 players.get(playersTurn).move(roll);
 
-			if (playersTurn == 3) {
+			result = properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
+
+			// TODO what if a player is eliminated?
+			if (playersTurn >= players.size() - 1) {
 				playersTurn = 0;
 			} else {
 				playersTurn++;
 			}
-			System.out.println("Roll:"+roll);
+			System.out.println("Roll:" + roll);
 		}
-		f.repaint();
-
+		f.revalidate();
+		board.revalidate();
+		board.repaint();
 	}
 
 	public static void main(String[] args) {
@@ -193,13 +198,14 @@ public class MonopolyDriver implements ActionListener {
 		play.run();
 
 	}
-
+	
+//board class. 
 	private class MyCanvas extends Canvas {
 		static final long serialVersionUID = 999;
 
 		public MyCanvas() {
 			setBackground(Color.GRAY);
-			setSize(900, 768);
+			setSize(900, 900);
 
 		}
 
@@ -207,70 +213,83 @@ public class MonopolyDriver implements ActionListener {
 
 			setBackground(Color.WHITE);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+
+			System.out.println(result);
 			for (int x = 0; x < 11; x++) {
 				g.drawRect(10 + (80 * x), 20, 80, 75);
-				g.drawRect(10 + (80 * x), 655, 80, 75);
+				g.drawRect(10 + (80 * x), 725, 80, 75);
+				//Draw spaces 20-30
 				if (properties[x + 20].getName().length() < 10) {
-					g.drawString(properties[x + 20].getName(), 11 + (x * 80), 45);
+					g.drawString((x + 20)+properties[x + 20].getName(), 11 + (x * 80), 45);
 				} else {
-					g.drawString(properties[x + 20].getName().substring(0, properties[x + 20].getName().lastIndexOf(" ")),
+					g.drawString(
+							(x + 20)+properties[x + 20].getName().substring(0, properties[x + 20].getName().lastIndexOf(" ")),
 							11 + (x * 80), 45);
-					g.drawString(properties[x + 20].getName().substring(properties[x + 20].getName().lastIndexOf(" ") + 1),
+					g.drawString(
+							(x + 20)+properties[x + 20].getName().substring(properties[x + 20].getName().lastIndexOf(" ") + 1),
 							11 + (x * 80), 57);
 				}
-
+				//Draw first 10 spaces
 				if (properties[10 - x].getName().length() < 10) {
-					g.drawString(properties[10 - x].getName(), 11 + (x * 80), 667);
+					g.drawString((10 - x)+properties[10 - x].getName(), 11 + (x * 80), 747);
 				} else {
-					g.drawString(properties[10 - x].getName().substring(0, properties[10 - x].getName().lastIndexOf(" ")),
-							11 + (x * 80), 667);
-					g.drawString(properties[10 - x].getName().substring(properties[10 - x].getName().lastIndexOf(" ") + 1),
-							11 + (x * 80), 687);
+					g.drawString(
+							(10 - x)+properties[10 - x].getName().substring(0, properties[10 - x].getName().lastIndexOf(" ")),
+							11 + (x * 80), 747);
+					g.drawString(
+							(10 - x)+properties[10 - x].getName().substring(properties[10 - x].getName().lastIndexOf(" ") + 1),
+							11 + (x * 80), 767);
 				}
 
-
-
 			}
-			for (int x = 0; x < 8; x++) {
+			for (int x = 0; x < 9; x++) {
 
 				g.drawRect(10, 95 + (70 * x), 80, 70);
 				g.drawRect(810, 95 + (70 * x), 80, 70);
+				//Draw spaces 11-19
 				if (properties[19 - x].getName().length() < 10)
-					g.drawString(properties[19 - x].getName(), 10, 120 + (x * 70));
+					g.drawString((18 - x)+properties[19 - x].getName(), 10, 120 + (x * 70));
 				else {
-					g.drawString(properties[19 - x].getName().substring(0,properties[19 - x].getName().lastIndexOf(' ')), 10, 120 + (x * 70));
-					g.drawString(properties[19 - x].getName().substring(properties[19 - x].getName().lastIndexOf(' ')+1), 10, 132 + (x * 70));
+					g.drawString(
+							(19 - x)+properties[19 - x].getName().substring(0, properties[19 - x].getName().lastIndexOf(' ')),
+							10, 120 + (x * 70));
+					g.drawString(
+							(19 - x)+properties[19 - x].getName().substring(properties[19 - x].getName().lastIndexOf(' ') + 1),
+							10, 132 + (x * 70));
 				}
-				
-				if (properties[19 - x].getName().length() < 10)
-					g.drawString(properties[19 - x].getName(), 810, 120 + (x * 70));
+				//Draw spaces 31-38
+				if (properties[31 + x].getName().length() < 10)
+					g.drawString((31 + x)+properties[31 + x].getName(), 810, 120 + (x * 70));
 				else {
-					g.drawString(properties[19 - x].getName().substring(0,properties[19 - x].getName().lastIndexOf(' ')), 810, 120 + (x * 70));
-					g.drawString(properties[19 - x].getName().substring(properties[19 - x].getName().lastIndexOf(' ')+1), 810, 132 + (x * 70));
+					g.drawString(
+							(31 + x)+properties[31 + x].getName().substring(0, properties[31+ x].getName().lastIndexOf(' ')),
+							810, 120 + (x * 70));
+					g.drawString(
+							(31 + x)+properties[31 + x].getName().substring(properties[31 + x].getName().lastIndexOf(' ') + 1),
+							810, 132 + (x * 70));
 				}
-				
 
 			}
 
-			// TODO Change these to access the player objects.
-			
+			// Display the location of the players
+		 
+
 			for (int x = 0; x < players.size(); x++) {
-				System.out.println("location:"+players.get(x).getLocation());
+				System.out.println("location:" + players.get(x).getLocation());
 				g.drawString(players.get(x).getName() + " $" + players.get(x).getCash(), 200, 350 + (x * 15));
-				if(players.get(x).getLocation()<10)
-					g.drawString(""+x,810+ (players.get(x).getLocation()*80),720 );
+				if (players.get(x).getLocation() < 11)
+					g.drawString("" + (x + 1), 810 - (players.get(x).getLocation() * 80), 780 + (5 * x));
+				else if (players.get(x).getLocation() < 20)
+					g.drawString("" + (x + 1), 10 + (5 * x), 780 - ((players.get(x).getLocation() - 10) * 70));
+				else if (players.get(x).getLocation() < 30)
+					g.drawString("" + (x + 1), ((players.get(x).getLocation() - 20) * 80) + 10, 80 + (5 * x));
 				else
-					if(players.get(x).getLocation()<20)
-						g.drawString(""+x,100+players.get(x).getLocation() ,100+ players.get(x).getLocation());
-					else
-						if(players.get(x).getLocation()<30)
-							g.drawString(""+x,100+players.get(x).getLocation() ,100+ players.get(x).getLocation());
-						else
-							g.drawString(""+x,100+players.get(x).getLocation() ,100+ players.get(x).getLocation());
+					g.drawString("" + (x + 1), 820 + (5 * x), ((players.get(x).getLocation() - 30) * 70) + 80);
 			}
-			
-			
-			
+			g.setColor(Color.GREEN);
+			g.drawString(result, 100, 200);
+			g.setColor(Color.BLACK);
+
 		}
 	}
 }
