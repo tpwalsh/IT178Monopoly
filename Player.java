@@ -18,11 +18,13 @@ public class Player {
 		this.cash +=rent;
 		payer.cash -= rent;
 	}
-	public Player buyFunction(int rent){
-		if(this.cash> rent)this.cash -=rent;
-		return this;
-		
-	}
+	public Player buyFunction(int price){
+		if(this.cash> price){
+			this.cash -=price;
+			return this;
+		}else
+			return null;
+		}
 	public String getName(){
 		return name;
 	}
@@ -30,8 +32,8 @@ public class Player {
 		return location;
 	}
 	public void move(int spaces){
-		this.location +=1;
-		//this.location += spaces;
+		
+		this.location += spaces;
 		if (location > 39){
 			location-=40;
 			cash += 200;

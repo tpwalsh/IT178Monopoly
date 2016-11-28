@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;;
 
-//TODO  Create initial screen to load player names. destorying and recreating the jframe doesn't work. 
+//TODO  Create initial screen to load player names. destroying and recreating the jframe doesn't work. 
 
 public class MonopolyDriver implements ActionListener {
 	Graphics g;
@@ -33,6 +33,7 @@ public class MonopolyDriver implements ActionListener {
 		result = " ";
 		properties = new Property[40];
 		populateProperty();
+		board = new MyCanvas();
 		// drawBoard();
 	}
 
@@ -49,7 +50,6 @@ public class MonopolyDriver implements ActionListener {
 	 */
 	private void drawBoard() {
 
-		board = new MyCanvas();
 		f.add(board);
 
 		b = new JButton("Roll");
@@ -141,7 +141,7 @@ public class MonopolyDriver implements ActionListener {
 		properties[35] = new Property("Short Line", 200, 0);
 		properties[36] = new Property("Chance", 0, 0);
 		properties[37] = new Property("Park Place", 350, 35);
-		properties[38] = new Property("Luxury Tax", 100, 0);
+		properties[38] = new Property("Luxury Tax", 0, 75);
 		properties[39] = new Property("Boardwalk", 400, 50);
 	}
 
@@ -167,26 +167,27 @@ public class MonopolyDriver implements ActionListener {
 			for (int x = 0; x < comments.length; x++) {
 				f.remove(comments[x]);
 			}
-		//	board = new MyCanvas();
-		//	f.add(board);
 			drawBoard();
 		}
 		// if in the main screen
 		if (objectPressed.getText() == "Roll") {
 			int roll = ((int) (Math.random() * 6) + 1) + ((int) (Math.random() * 6) + 1);
-			roll = 1;
-			// players.get(playersTurn).roll(roll);
-			 players.get(playersTurn).move(roll);
-
+			// TODO Remove this, prevents random moving!
+			// roll = 1;
+			players.get(playersTurn).move(roll);
 			result = properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
-
-			// TODO what if a player is eliminated?
-			if (playersTurn >= players.size() - 1) {
+			if (players.get(playersTurn).getCash() < 0) { // remove player if
+															// broke
+				players.remove(players.get(playersTurn));
+			}
+			if (playersTurn >= players.size() - 1) { // on last player's turn
+														// revert back to player
+														// 1
 				playersTurn = 0;
 			} else {
 				playersTurn++;
 			}
-			System.out.println("Roll:" + roll);
+
 		}
 		f.revalidate();
 		board.revalidate();
@@ -198,8 +199,8 @@ public class MonopolyDriver implements ActionListener {
 		play.run();
 
 	}
-	
-//board class. 
+
+	// board class.
 	private class MyCanvas extends Canvas {
 		static final long serialVersionUID = 999;
 
@@ -213,81 +214,92 @@ public class MonopolyDriver implements ActionListener {
 
 			setBackground(Color.WHITE);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-
-			System.out.println(result);
 			for (int x = 0; x < 11; x++) {
 				g.drawRect(10 + (80 * x), 20, 80, 75);
 				g.drawRect(10 + (80 * x), 725, 80, 75);
-				//Draw spaces 20-30
+
+				// Draw spaces 20-30
 				if (properties[x + 20].getName().length() < 10) {
-					g.drawString((x + 20)+properties[x + 20].getName(), 11 + (x * 80), 45);
+					g.drawString(properties[x + 20].getName(), 11 + (x * 80), 45);
 				} else {
 					g.drawString(
-							(x + 20)+properties[x + 20].getName().substring(0, properties[x + 20].getName().lastIndexOf(" ")),
+							properties[x + 20].getName().substring(0, properties[x + 20].getName().lastIndexOf(" ")),
 							11 + (x * 80), 45);
 					g.drawString(
-							(x + 20)+properties[x + 20].getName().substring(properties[x + 20].getName().lastIndexOf(" ") + 1),
+							properties[x + 20].getName().substring(properties[x + 20].getName().lastIndexOf(" ") + 1),
 							11 + (x * 80), 57);
 				}
-				//Draw first 10 spaces
+				g.drawString(properties[x+20].ownedBy(), 11 + (x * 80), 93);
+				// Draw first 10 spaces
 				if (properties[10 - x].getName().length() < 10) {
-					g.drawString((10 - x)+properties[10 - x].getName(), 11 + (x * 80), 747);
+					g.drawString(properties[10 - x].getName(), 11 + (x * 80), 747);
 				} else {
 					g.drawString(
-							(10 - x)+properties[10 - x].getName().substring(0, properties[10 - x].getName().lastIndexOf(" ")),
+							properties[10 - x].getName().substring(0, properties[10 - x].getName().lastIndexOf(" ")),
 							11 + (x * 80), 747);
 					g.drawString(
-							(10 - x)+properties[10 - x].getName().substring(properties[10 - x].getName().lastIndexOf(" ") + 1),
+							properties[10 - x].getName().substring(properties[10 - x].getName().lastIndexOf(" ") + 1),
 							11 + (x * 80), 767);
 				}
+				g.drawString(properties[10 - x].ownedBy(), 11 + (x * 80), 798);
 
 			}
 			for (int x = 0; x < 9; x++) {
 
 				g.drawRect(10, 95 + (70 * x), 80, 70);
 				g.drawRect(810, 95 + (70 * x), 80, 70);
-				//Draw spaces 11-19
+				// Draw spaces 11-19
 				if (properties[19 - x].getName().length() < 10)
-					g.drawString((18 - x)+properties[19 - x].getName(), 10, 120 + (x * 70));
+					g.drawString(properties[19 - x].getName(), 10, 120 + (x * 70));
 				else {
 					g.drawString(
-							(19 - x)+properties[19 - x].getName().substring(0, properties[19 - x].getName().lastIndexOf(' ')),
+							properties[19 - x].getName().substring(0, properties[19 - x].getName().lastIndexOf(' ')),
 							10, 120 + (x * 70));
 					g.drawString(
-							(19 - x)+properties[19 - x].getName().substring(properties[19 - x].getName().lastIndexOf(' ') + 1),
+							properties[19 - x].getName().substring(properties[19 - x].getName().lastIndexOf(' ') + 1),
 							10, 132 + (x * 70));
 				}
-				//Draw spaces 31-38
+				g.drawString(properties[19 - x].ownedBy(), 10, 163 + (x * 70));
+
+				// Draw spaces 31-38
 				if (properties[31 + x].getName().length() < 10)
-					g.drawString((31 + x)+properties[31 + x].getName(), 810, 120 + (x * 70));
+					g.drawString(properties[31 + x].getName(), 810, 120 + (x * 70));
 				else {
 					g.drawString(
-							(31 + x)+properties[31 + x].getName().substring(0, properties[31+ x].getName().lastIndexOf(' ')),
+							properties[31 + x].getName().substring(0, properties[31 + x].getName().lastIndexOf(' ')),
 							810, 120 + (x * 70));
 					g.drawString(
-							(31 + x)+properties[31 + x].getName().substring(properties[31 + x].getName().lastIndexOf(' ') + 1),
+							properties[31 + x].getName().substring(properties[31 + x].getName().lastIndexOf(' ') + 1),
 							810, 132 + (x * 70));
 				}
+				g.drawString(properties[31 + x].ownedBy(), 810, 163 + (x * 70));
 
 			}
 
 			// Display the location of the players
-		 
 
+			g.setColor(Color.RED);
 			for (int x = 0; x < players.size(); x++) {
-				System.out.println("location:" + players.get(x).getLocation());
 				g.drawString(players.get(x).getName() + " $" + players.get(x).getCash(), 200, 350 + (x * 15));
 				if (players.get(x).getLocation() < 11)
-					g.drawString("" + (x + 1), 810 - (players.get(x).getLocation() * 80), 780 + (5 * x));
+					g.drawString("" + (x + 1), 810 - (players.get(x).getLocation() * 80) + (15 * x), 780); // bottom
+																											// row
 				else if (players.get(x).getLocation() < 20)
-					g.drawString("" + (x + 1), 10 + (5 * x), 780 - ((players.get(x).getLocation() - 10) * 70));
+					g.drawString("" + (x + 1), 10 + (15 * x), 780 - ((players.get(x).getLocation() - 10) * 70)); // left
+																													// side
 				else if (players.get(x).getLocation() < 30)
-					g.drawString("" + (x + 1), ((players.get(x).getLocation() - 20) * 80) + 10, 80 + (5 * x));
+					g.drawString("" + (x + 1), ((players.get(x).getLocation() - 20) * 80) + 10 + (15 * x), 80);// top
+																												// row
 				else
-					g.drawString("" + (x + 1), 820 + (5 * x), ((players.get(x).getLocation() - 30) * 70) + 80);
+					g.drawString("" + (x + 1), 820 + (15 * x), ((players.get(x).getLocation() - 30) * 70) + 80);
 			}
-			g.setColor(Color.GREEN);
-			g.drawString(result, 100, 200);
+
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+			if (!result.equals("OK")) {
+				g.drawString(result, 100, 200);
+			}
+			System.out
+					.println(players.get(playersTurn).getName() + "location" + players.get(playersTurn).getLocation());
 			g.setColor(Color.BLACK);
 
 		}

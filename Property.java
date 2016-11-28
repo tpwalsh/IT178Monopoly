@@ -20,23 +20,52 @@ public class Property {
 	}
 
 	public String landedOn(Player p) {
-		if (owner == null) {
-			owner = p.buyFunction(price);
-			this.owner = p;
-		} else {
-			this.owner.payOwner(p, rent);
+		System.out.println(this.name + " CP:"+ p.getName() + "COH:"+p.getCash()+" OB"+this.ownedBy() );
+		if (!this.name.equals("Chance") && !this.name.equals("Community Chest") && !this.name.equals("Jail")
+				&& !this.name.equals("Free Parking") && !this.name.equals("Go")  && !this.name.equals("Income Tax")
+				&& !this.name.equals("Luxury Tax")&& !this.name.equals("Go To Jail" )) {
+			
+			if (owner != null ) {
+				if( p.getName().equals(this.owner.getName())){
+					return p.getName() + " already owns " + this.getName(); 
+				}else{
+					this.owner.payOwner(p, rent);
+					return p.getName()+" paid "+ this.owner.getName() +" $"+this.rent + " in rent for " +this.getName();
+				}
+			}else{
+				System.out.println("potential Purchase:" + this.price );
+				this.owner = p.buyFunction(this.price);
+				
+				if(owner == null){
+					return p.getName()+" was unable to purchase " + this.getName();
+				}else{
+					return p.getName() + " purchased " + this.getName();
+				}
+				
+			}
+			
+			
+		}else{
+			if (this.name.equals("Chance") || this.name.equals("Community Chest")) {
+
+				return p.getName() + " "+ this.chance(p); // chance(p);
+			} else {
+				if(this.name.equals("Luxury Tax")){
+					p.buyFunction(this.rent);
+					return " paid a Luxury Tax of $"+this.rent;
+				}else
+				return "OK";
+			}
 		}
-		if (this.name.equals("Chance") || this.name.equals("Community Chest")) {
-			System.out.println("C or CC: "+ this.name);
-			return"OK"; //chance(p);
-		} else {
-			return "OK";
-		}
-		// TODO The left and right sides don't work 100%. 
+		// TODO The left and right sides don't work 100%.
 	}
 
 	public String ownedBy() {
-		return "test";
+		if (owner != null) {
+			return this.owner.getName();
+		} else {
+			return "unowned";
+		}
 	}
 
 	public void setName(String name) {
@@ -61,7 +90,7 @@ public class Property {
 		}
 		case 3: {
 			p.buyFunction(15);
-			return "pay poor tax of $15";
+			return "paid a poor tax of $15";
 
 		}
 		case 4: {
@@ -69,21 +98,18 @@ public class Property {
 				p.move((5 - p.getLocation()));
 			} else
 				p.move((45 - p.getLocation()));
-			return "Take a ride on the Reading Railroad!";
+			return "Took a ride on the Reading Railroad!";
 		}
 		case 5: {
-			if (p.getLocation() < 5) {
-				p.move((5 - p.getLocation()));
-			} else
-				p.move((45 - p.getLocation()));
-			return "Take a ride on the Reading Railroad!";
+			p.move((40 - p.getLocation()));
+			return "Advanced to GO! ";
 		}
 		case 6: {
-			if (p.getLocation() < 5) {
-				p.move((5 - p.getLocation()));
+			if (p.getLocation() < 2) {
+				p.move((37 + p.getLocation()));
 			} else
-				p.move((45 - p.getLocation()));
-			return "Take a ride on the Reading Railroad!";
+				p.move(-3);
+			return "Go back 3 spaces!";
 		}
 		default:
 			return "Error!";
