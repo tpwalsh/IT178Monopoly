@@ -13,7 +13,7 @@ public class MonopolyDriver implements ActionListener {
 	Property[] properties;
 	int score1, playersTurn;
 	MyCanvas board;
-	JButton b;
+	JButton b,c1;
 	ArrayList<Player> players = new ArrayList<Player>();
 	String result;
 	private static JLabel[] comments = new JLabel[5];
@@ -53,6 +53,7 @@ public class MonopolyDriver implements ActionListener {
 		f.add(board);
 
 		b = new JButton("Roll");
+		c1 = new JButton("Roll");
 		b.setBounds(900, 100, 100, 40);
 		b.addActionListener(this);
 		f.add(b);
@@ -107,18 +108,18 @@ public class MonopolyDriver implements ActionListener {
 		properties[1] = new Property("Mediteranitan Ave.", 60, 4);
 		properties[2] = new Property("Community Chest", 0, 0);
 		properties[3] = new Property("Baltic Ave.", 200, 6);
-		properties[4] = new Property("Income Tax", 0, 0);
-		properties[5] = new Property("Reading Railroad", 100, 0);
+		properties[4] = new Property("Income Tax", 0, 30);
+		properties[5] = new Property("Reading Railroad", 100, 50);
 		properties[6] = new Property("Oriental Ave.", 100, 6);
 		properties[7] = new Property("Chance", 0, 0);
 		properties[8] = new Property("Vermont Ave.", 100, 6);
 		properties[9] = new Property("Connecticut Ave.", 120, 8);
 		properties[10] = new Property("Jail", 0, 0);
 		properties[11] = new Property("St. Charles Place", 140, 10);
-		properties[12] = new Property("Electric Company", 150, 0);
+		properties[12] = new Property("Electric Company", 150, 20);
 		properties[13] = new Property("States Ave.", 140, 10);
 		properties[14] = new Property("Virginia Ave.", 160, 12);
-		properties[15] = new Property("Pennsylvania Railroad", 200, 0);
+		properties[15] = new Property("Pennsylvania Railroad", 200, 50);
 		properties[16] = new Property("St. James Place", 180, 14);
 		properties[17] = new Property("Community Chest", 0, 0);
 		properties[18] = new Property("Tennessee Ave.", 180, 14);
@@ -128,17 +129,17 @@ public class MonopolyDriver implements ActionListener {
 		properties[22] = new Property("Chance", 0, 0);
 		properties[23] = new Property("Indiana Ave.", 220, 18);
 		properties[24] = new Property("Illinois Ave.", 240, 20);
-		properties[25] = new Property("B & O Railroad", 200, 0);
+		properties[25] = new Property("B & O Railroad", 200, 50);
 		properties[26] = new Property("Atlantic Ave.", 260, 22);
 		properties[27] = new Property("Ventnor Ave.", 260, 22);
-		properties[28] = new Property("Water Works", 150, 0);
+		properties[28] = new Property("Water Works", 150, 30);
 		properties[29] = new Property("Marvin Gardens", 280, 24);
 		properties[30] = new Property("Go To Jail", 0, 0);
 		properties[31] = new Property("Pacific Ave.", 300, 26);
 		properties[32] = new Property("North Carolina Ave.", 300, 26);
 		properties[33] = new Property("Community Chest", 0, 0);
 		properties[34] = new Property("Pennsylvania Ave.", 320, 28);
-		properties[35] = new Property("Short Line", 200, 0);
+		properties[35] = new Property("Short Line", 200, 50);
 		properties[36] = new Property("Chance", 0, 0);
 		properties[37] = new Property("Park Place", 350, 35);
 		properties[38] = new Property("Luxury Tax", 0, 75);
@@ -177,7 +178,7 @@ public class MonopolyDriver implements ActionListener {
 			players.get(playersTurn).move(roll);
 			result = properties[players.get(playersTurn).getLocation()].landedOn(players.get(playersTurn));
 			if (players.get(playersTurn).getCash() < 0) { // remove player if
-															// broke
+				result += "   "+players.get(playersTurn).getName() +" has gone broke!";		// broke
 				players.remove(players.get(playersTurn));
 			}
 			if (playersTurn >= players.size() - 1) { // on last player's turn
@@ -280,7 +281,7 @@ public class MonopolyDriver implements ActionListener {
 
 			g.setColor(Color.RED);
 			for (int x = 0; x < players.size(); x++) {
-				g.drawString(players.get(x).getName() + " $" + players.get(x).getCash(), 200, 350 + (x * 15));
+				g.drawString((x+1)+": "+ players.get(x).getName() + " $" + players.get(x).getCash(), 200, 350 + (x * 15));
 				if (players.get(x).getLocation() < 11)
 					g.drawString("" + (x + 1), 810 - (players.get(x).getLocation() * 80) + (15 * x), 780); // bottom
 																											// row

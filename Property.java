@@ -20,41 +20,42 @@ public class Property {
 	}
 
 	public String landedOn(Player p) {
-		System.out.println(this.name + " CP:"+ p.getName() + "COH:"+p.getCash()+" OB"+this.ownedBy() );
+		System.out.println(this.name + " CP:" + p.getName() + "COH:" + p.getCash() + " OB" + this.ownedBy());
 		if (!this.name.equals("Chance") && !this.name.equals("Community Chest") && !this.name.equals("Jail")
-				&& !this.name.equals("Free Parking") && !this.name.equals("Go")  && !this.name.equals("Income Tax")
-				&& !this.name.equals("Luxury Tax")&& !this.name.equals("Go To Jail" )) {
-			
-			if (owner != null ) {
-				if( p.getName().equals(this.owner.getName())){
-					return p.getName() + " already owns " + this.getName(); 
-				}else{
+				&& !this.name.equals("Free Parking") && !this.name.equals("Go") && !this.name.equals("Income Tax")
+				&& !this.name.equals("Luxury Tax") && !this.name.equals("Go To Jail")) {
+
+			if (owner != null) {
+				if (p.getName().equals(this.owner.getName())) {
+					return p.getName() + " already owns " + this.getName();
+				} else {
 					this.owner.payOwner(p, rent);
-					return p.getName()+" paid "+ this.owner.getName() +" $"+this.rent + " in rent for " +this.getName();
+					return p.getName() + " paid " + this.owner.getName() + " $" + this.rent + " in rent for "
+							+ this.getName();
 				}
-			}else{
-				System.out.println("potential Purchase:" + this.price );
+			} else {
+				System.out.println("potential Purchase:" + this.price);
 				this.owner = p.buyFunction(this.price);
-				
-				if(owner == null){
-					return p.getName()+" was unable to purchase " + this.getName();
-				}else{
+
+				if (owner == null) {
+					return p.getName() + " was unable to purchase " + this.getName();
+				} else {
 					return p.getName() + " purchased " + this.getName();
 				}
-				
 			}
-			
-			
-		}else{
+
+		} else {
 			if (this.name.equals("Chance") || this.name.equals("Community Chest")) {
 
-				return p.getName() + " "+ this.chance(p); // chance(p);
+				return p.getName() + " " + this.chance(p); // chance(p);
 			} else {
-				if(this.name.equals("Luxury Tax")){
-					p.buyFunction(this.rent);
-					return " paid a Luxury Tax of $"+this.rent;
-				}else
-				return "OK";
+				if (this.name.equals("Luxury Tax") || this.name.equals("Income Tax")) {
+					Player temp = new Player();
+					temp.payOwner(p, this.rent);
+					return " paid a Luxury Tax of $" + this.rent;
+				} else {
+					return "OK";
+				}
 			}
 		}
 		// TODO The left and right sides don't work 100%.
@@ -89,7 +90,8 @@ public class Property {
 
 		}
 		case 3: {
-			p.buyFunction(15);
+			Player temp = new Player();
+			temp.payOwner(p, this.rent);
 			return "paid a poor tax of $15";
 
 		}
