@@ -1,66 +1,81 @@
 package IT178Monopoly;
-
 public class Player {
 	private String name;
 	private int location;
-	private double cash;
-	private int turn;
-	private boolean inJail = false;
+	private int cash;
+	final int STARTING_CASH= 300;
+	final int PASS_GO_CASH = 200;
 	
-	
-	public Player(String name, double cashBalance, int locale, int playerTurn)
-	{
-		this.cash = cash;
-		this.location = location;
+	public Player(){
+		cash = STARTING_CASH;
+		name = "";
+		location = 0;
+	}
+	/**
+	 * 
+	 * @param name Name of the player in the new Object
+	 */
+	public Player(String name){
+		cash = STARTING_CASH;
 		this.name = name;
-		this.turn = playerTurn;
-		
+		location = 0;
 	}
+	/**
+	 * 
+	 * @param payer the Player Object who is paying this player.
+	 * @param rent
+	 */
 	public void payOwner(Player payer, int rent){
-		
 		this.cash +=rent;
-		payer.cash -= rent;
+		if(payer != null){
+			payer.cash -= rent;
+		}
 	}
-	public void buyFunction(){
-		
-	}
-	public void buyFunction(int rent){
-		this.cash -=rent;
-		
-	}
+	/**
+	 * 
+	 * @param price price of the property to buy. 
+	 * @return returns null if unable to afford the property. 
+	 */
+	public Player buyFunction(int price){
+		if(this.cash> price){
+			this.cash -=price;
+			return this;
+		}else
+			return null;
+		}
+	/**
+	 * 
+	 * @return Name of the person
+	 */
 	
-	public void moveSpaces(int roll) {
-		
-		if ( inJail == true ) { 
-			 
-		 }
-		else if(location + roll > 40) {
-			this.location = 40 - location - roll;
-		}
-		else {
-			this.location = location + roll; 
-		}
-		
-			}
-		
-	public int getLocation() {
-		return location;
-	}
 	public String getName(){
 		return name;
 	}
-	public int getCash(){
-		return 0;
+	/**
+	 * 
+	 * @return location of the player (0-39)
+	 */
+	public int getLocation(){
+		return location;
 	}
-	
+	/**
+	 * 
+	 * @param spaces Number of spaces to move. 
+	 */
+	public void move(int spaces){
+		
+		this.location += spaces;
+		if (location > 39){
+			location-=40;
+			cash += PASS_GO_CASH;
+		}
+	}
+	/**
+	 * returns the current cash reserves of the person. 
+	 * @return
+	 */
+	public int getCash(){
+		return cash;
+	}
 
-	
-	
-	
-			
-			//cash balance zero, bust
-	
-			
-	
-	
 }
