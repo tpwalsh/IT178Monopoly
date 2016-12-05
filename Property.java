@@ -1,13 +1,11 @@
 package IT178Monopoly;
 
-import java.awt.Color;
 
 public class Property {
 	private String name;
 	private Player owner;
 	private int price;
 	private int rent;
-	private Color color;
 	private boolean ownable;
 
 	public Property() {
@@ -23,7 +21,7 @@ public class Property {
 	 * @param price
 	 *            purchase price of the property
 	 * @param rent
-	 *            rent to be chaged when another player lands on it.
+	 *            rent to be charged when another player lands on it.
 	 */
 
 	public Property(String name, int price, int rent, boolean ownable) {
@@ -48,36 +46,39 @@ public class Property {
 
 			if (owner != null) {
 				if (p.getName().equals(this.owner.getName())) {
-					return p.getName() + " already owns " + this.getName();
+					return p.getName() + " already owns " + this.getName()  + "\n Next player, please click Roll!";
 				} else {
 					this.owner.payOwner(p, rent);
 					return p.getName() + " paid " + this.owner.getName() + " $" + this.rent + " in rent for "
-							+ this.getName();
+							+ this.getName()  + "\n Next player, please click Roll!" ;
 				}
 			} else {
 				System.out.println("potential Purchase:" + this.price);
 				this.owner = p.buyFunction(this.price);
 
 				if (owner == null) {
-					return p.getName() + " was unable to purchase " + this.getName();
+					return p.getName() + " was unable to purchase " + this.getName() + "." + "\n Next player, please click Roll!";
 				} else {
-					return p.getName() + " purchased " + this.getName();
+					return p.getName() + " purchased " + this.getName() + "." + "\n Next player, please click Roll!";
 				}
 			}
 
 		} else {
-			if (this.name.equals("Chance") || this.name.equals("Community Chest"))
-				return p.getName() + " " + this.chance(p); // chance(p);
+			if (this.name.equals("Chance 1") || this.name.equals("Chance 2") || this.name.equals("Chance 3")) 
+				return p.getName() + " " + "please click the respective Chance button!";
+			else if (this.name.equals("Community Chest")) {
+				return p.getName() + "please click the Community Chest button!";
+			}
 			else if (this.name.equals("Luxury Tax") || this.name.equals("Income Tax")) {
 				Player temp = new Player();
 				temp.payOwner(p, this.rent);
-				return p.getName() + " paid a Luxury Tax of $" + this.rent;
+				return p.getName() + " paid a Luxury Tax of $" + this.rent + "." + "\n Next player, please click Roll!";
 			} else if (this.name.equals("Go"))
-				return p.getName() +" landed on Go, and collected $200";
+				return p.getName() +" landed on Go, and collected $200." + "\n Next player, please click Roll!";
 			else if (this.name.contains("Jail"))
-				return p.getName()+ " is just visiting Jail.";
+				return p.getName()+ " is just visiting Jail."  + "\n Next player, please click Roll!";
 			else if( this.name.equals("Free Parking"))
-				return p.getName()+ " found free parking!";
+				return p.getName()+ " found free parking!" + "\n Next player, please click Roll!";
 			else
 				return "OK";
 		}
@@ -97,7 +98,7 @@ public class Property {
 	}
 
 	/**
-	 * setter for the name of the property. probably not needed.
+	 * setter for the property name
 	 * 
 	 * @param name
 	 *            name of the property.
@@ -121,22 +122,22 @@ public class Property {
 	 *            Player Object of who landed on the property.
 	 * @return display string of what happened.
 	 */
-	private String chance(Player p) {
+	public String chance(Player p) {
 		int card = ((int) (Math.random() * 6) + 1);
 		switch (card) {
 		case 1: {
 			p.move(40 - p.getLocation());
-			return "moved directly to Go";
+			return p.getName() + " moved directly to Go";
 		}
 		case 2: {
 			p.buyFunction(-100);
-			return "bank error in your favor. Collect $100";
+			return p.getName() +" bank error in your favor. Collect $100";
 
 		}
 		case 3: {
 			Player temp = new Player();
 			temp.payOwner(p, this.rent);
-			return "paid a poor tax of $15";
+			return p.getName() +" paid a poor tax of $15";
 
 		}
 		case 4: {
@@ -144,21 +145,21 @@ public class Property {
 				p.move((5 - p.getLocation()));
 			} else
 				p.move((45 - p.getLocation()));
-			return "Took a ride on the Reading Railroad!";
+			return p.getName() + " took a ride on the Reading Railroad!";
 		}
 		case 5: {
 			p.move((40 - p.getLocation()));
-			return "Advanced to GO! ";
+			return p.getName() + "advanced to GO! ";
 		}
 		case 6: {
 			if (p.getLocation() < 2) {
 				p.move((37 + p.getLocation()));
 			} else
 				p.move(-3);
-			return "Go back 3 spaces!";
+			return p.getName() +" go back 3 spaces!";
 		}
 		default:
-			return "Error!";
+			return "error!";
 		}
 	}
 /**

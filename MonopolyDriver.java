@@ -5,7 +5,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
 
-//TODO  Create initial screen to load player names. destroying and recreating the jframe doesn't work. 
 
 public class MonopolyDriver implements ActionListener {
 	Graphics g;
@@ -13,16 +12,15 @@ public class MonopolyDriver implements ActionListener {
 	Property[] properties;
 	int score1, playersTurn;
 	MyCanvas board;
-	JButton b, c1;
+	JButton b, c1, b1, b2, b3, b4, b5, b6;
+	Property prop = new Property();
 	ArrayList<Player> players = new ArrayList<Player>();
+	JButton[] buttons = new JButton[6];
 	String result;
 	private static JLabel[] comments = new JLabel[5];
 	private static JTextArea[] playerNames = new JTextArea[4];
 	Font labelFont;
 
-	/**
-	 * 
-	 */
 	private MonopolyDriver() {
 
 		f = new JFrame();
@@ -34,14 +32,6 @@ public class MonopolyDriver implements ActionListener {
 		properties = new Property[40];
 		populateProperty();
 		board = new MyCanvas();
-		// drawBoard();
-	}
-
-	private void run() {
-		/*
-		 * Main run program. In an event driven program like this,is it needed?
-		 */
-
 	}
 
 	/**
@@ -51,17 +41,37 @@ public class MonopolyDriver implements ActionListener {
 	private void drawBoard() {
 
 		f.add(board);
-
 		b = new JButton("Roll");
-		c1 = new JButton("Roll");
+//		c1 = new JButton("Roll");
+		b1 = new JButton("Chance #1 ?");
+		b2 = new JButton("Chance #2 ?");
+		b3 = new JButton("Chance #3 ?");
+		b4 = new JButton("Community Chest");
+
 		b.setBounds(900, 100, 100, 40);
+		b1.setBounds(900, 150, 100, 40);
+		b2.setBounds(900, 200, 100, 40);
+		b3.setBounds(900, 250, 100, 40);
+		b4.setBounds(900, 300, 200, 40);
+
 		b.addActionListener(this);
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		b3.addActionListener(this);
+		b4.addActionListener(this);
+
 		f.add(b);
+		f.add(b1);
+		f.add(b2);
+		f.add(b3);
+		f.add(b4);
+
 		f.validate();
 		f.setVisible(true);
 		f.repaint();
 
 	}
+	
 
 	private void getPlayers() {
 		for (int x = 0; x < playerNames.length; x++) {
@@ -102,7 +112,6 @@ public class MonopolyDriver implements ActionListener {
 	}
 
 	private void populateProperty() {
-		// TODO Figure out how to keep track of each property.
 
 		properties[0] = new Property("Go", 60, 2,false);
 		properties[1] = new Property("Mediteranitan Ave.", 60, 4,true);
@@ -111,7 +120,7 @@ public class MonopolyDriver implements ActionListener {
 		properties[4] = new Property("Income Tax", 0, 30,false);
 		properties[5] = new Property("Reading Railroad", 100, 50,true);
 		properties[6] = new Property("Oriental Ave.", 100, 6,true);
-		properties[7] = new Property("Chance", 0, 0,false);
+		properties[7] = new Property("Chance 1", 0, 0,false);
 		properties[8] = new Property("Vermont Ave.", 100, 6,true);
 		properties[9] = new Property("Connecticut Ave.", 120, 8,true);
 		properties[10] = new Property("Jail", 0, 0,false);
@@ -126,7 +135,7 @@ public class MonopolyDriver implements ActionListener {
 		properties[19] = new Property("New York Ave.", 200, 16,true);
 		properties[20] = new Property("Free Parking", 0, 0,false);
 		properties[21] = new Property("Kentucky Ave.", 220, 18,true);
-		properties[22] = new Property("Chance", 0, 0,false);
+		properties[22] = new Property("Chance 2", 0, 0,false);
 		properties[23] = new Property("Indiana Ave.", 220, 18,true);
 		properties[24] = new Property("Illinois Ave.", 240, 20,true);
 		properties[25] = new Property("B & O Railroad", 200, 50,true);
@@ -140,7 +149,7 @@ public class MonopolyDriver implements ActionListener {
 		properties[33] = new Property("Community Chest", 0, 0,false);
 		properties[34] = new Property("Pennsylvania Ave.", 320, 28,true);
 		properties[35] = new Property("Short Line", 200, 50,true);
-		properties[36] = new Property("Chance", 0, 0,false);
+		properties[36] = new Property("Chance 3", 0, 0,false);
 		properties[37] = new Property("Park Place", 350, 35,true);
 		properties[38] = new Property("Luxury Tax", 0, 75,false);
 		properties[39] = new Property("Boardwalk", 400, 50,true);
@@ -152,7 +161,6 @@ public class MonopolyDriver implements ActionListener {
 	 * needs to be (JButton)
 	 */
 	public void actionPerformed(ActionEvent e) {
-		// TODO This needs fleshing out.+
 
 		JButton objectPressed = (JButton) e.getSource();
 		// If in the intro screen
@@ -196,9 +204,21 @@ public class MonopolyDriver implements ActionListener {
 			}
 
 		}
+		// Calls chance method when buttons are pressed.
+		if (objectPressed.getText() == "Chance #1 ?"|| objectPressed.getText() == "Chance #2 ?"|| objectPressed.getText() == "Chance #3 ?"||
+				objectPressed.getText() == "Community Chests") {
+			prop.chance(players.get(playersTurn));
+		}
 		f.revalidate();
 		board.revalidate();
 		board.repaint();
+	}
+	
+	private void run() {
+		/*
+		 * Main run program. In an event driven program like this, it's not necessarily needed.
+		 */
+
 	}
 
 	public static void main(String[] args) {
@@ -214,14 +234,18 @@ public class MonopolyDriver implements ActionListener {
 		public MyCanvas() {
 			setBackground(Color.GRAY);
 			setSize(900, 900);
-
 		}
 
 		public void paint(Graphics g) {
-
+			
+			Color newGreen = new Color(204,255,229);
 			setBackground(Color.WHITE);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-			for (int x = 0; x < 11; x++) {	
+			for (int x = 0; x < 11; x++) {
+				g.setColor(newGreen);
+				g.fillRect(10 + (80 * x), 20, 80, 75);
+				g.fillRect(10 + (80 * x), 725, 80, 75);
+				g.setColor(Color.BLACK);
 				g.drawRect(10 + (80 * x), 20, 80, 75); // left side			
 				g.drawRect(10 + (80 * x), 725, 80, 75); // right side
 				// Draw spaces 20-30
@@ -253,6 +277,10 @@ public class MonopolyDriver implements ActionListener {
 
 			}
 			for (int x = 0; x < 9; x++) {
+				g.setColor(newGreen);
+				g.fillRect(10, 95 + (70 * x), 80, 70);
+				g.fillRect(810, 95 + (70 * x), 80, 70);
+				g.setColor(Color.BLACK);
 				g.drawRect(10, 95 + (70 * x), 80, 70); // top row
 				g.drawRect(810, 95 + (70 * x), 80, 70); // bottom row
 				// Draw spaces 11-19
@@ -285,7 +313,7 @@ public class MonopolyDriver implements ActionListener {
 					g.drawString(properties[31 + x].ownedBy(), 810, 163 + (x * 70));
 
 			}
-
+			
 			// Display the location of the players
 			g.setColor(Color.RED);
 			for (int x = 0; x < players.size(); x++) {
